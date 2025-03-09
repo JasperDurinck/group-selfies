@@ -414,6 +414,52 @@ class Group:
             new_mol.RemoveAtom(idx)
         return new_mol
 
+    ### for serialization
+    def __getstate__(self):
+        state = {
+            'name': self.name,
+            'canonsmiles': self.canonsmiles,
+            'priority': self.priority,
+            'attachment_points': self.attachment_points,
+            'parent_map': self.parent_map,
+            'matched': self.matched,
+            'index': self.index,
+            'member_idxs': self.member_idxs if hasattr(self, 'member_idxs') else None,
+            'outer_to_inner': self.outer_to_inner if hasattr(self, 'outer_to_inner') else None,
+            'group_size': self.group_size
+        }
+        return state
+    
+    def __setstate__(self, state):
+        self.name = state['name']
+        self.canonsmiles = state['canonsmiles']
+        self.priority = state['priority']
+        self.matched = state['matched']
+        self.index = state['index']
+        self.member_idxs = state['member_idxs']
+        self.outer_to_inner = state['outer_to_inner']
+        self.attachment_points = state['attachment_points']
+        self.parent_map = state['parent_map']
+        self.group_size = state['group_size']
+
+        # Rebuild the Mol object
+        self.mol = group_parser(self.canonsmiles, sanitize=False)
+        Chem.Kekulize(self.mol, clearAromaticFlags=True)
+        self.mol.UpdatePropertyCache()
+
+        # Reapply attachment points with consistent labeling (e.g., all *1)
+        temp_mol = AllChem.EditableMol(self.mol)
+        for idx in self.attachment_points:
+            atom = self.mol.GetAtomWithIdx(idx)
+            if atom.GetSymbol() == '*':
+                atom.SetIsotope(1)  # Reset to *1
+                atom.SetAtomMapNum(0)  # Clear atom map number if not needed
+                atom.SetIntProp('valAvailable', 1)  # Reset valency if needed
+        self.mol = temp_mol.GetMol()
+        self.pattern = pattern_parser(self.canonsmiles)
+        self.graph = MolecularGraph(self.mol, None)
+    
+
 class GroupWrapper:
     def __init__(self, group):
         # self.group = group
