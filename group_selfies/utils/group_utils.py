@@ -165,7 +165,7 @@ def extract_group_bonds(group, mol, matched): #extracts atoms and bonds for all 
 
     exact_match = set()
 
-    for match in mol_h.GetSubstructMatches(group.pattern, uniquify=False, useChirality=True, , maxMatches=100000): #Note, issue found for large compounds that maxMatches exceeds the standard 1000, thus not resulting in matching
+    for match in mol_h.GetSubstructMatches(group.pattern, uniquify=False, useChirality=True, maxMatches=10000): #Note, issue found for large compounds that maxMatches exceeds the standard 1000, thus not resulting in matching
         if tuple(sorted(match)) in exact_match:
             continue
         parents_in_match = set([match[x] for x in group.parent_map.values()])
