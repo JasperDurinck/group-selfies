@@ -1,6 +1,18 @@
 # Group SELFIES
 https://arxiv.org/abs/2211.13322
 
+## Fork Changes
+
+Fix Group Serialization Issue
+Previously, serialization of Group objects caused attachment labels to default to :0 instead of retaining their original labels (e.g., :2, :6, [:2GS_frag_64]).
+
+Resolution: Implemented custom __getstate__ and __setstate__ methods to preserve the correct attachment labels during serialization.
+
+Enhanced SMARTS Pattern Matching
+Increased the maximum number of SMARTS pattern matches to support large cyclic peptides composed of smaller fragments.
+
+Purpose: Ensures all relevant fragments are detected and properly grouped when processing complex compounds.
+
 ## Installation
 Python >= 3.8 is required.
 
