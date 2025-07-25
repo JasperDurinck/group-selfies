@@ -6,7 +6,7 @@ Python >= 3.8 is required.
 
 RDKit is required to use this package. Once it is installed, clone this repository using
 ```bash
-git clone https://github.com/aspuru-guzik-group/group-selfies
+git clone https://github.com/JasperDurinck/group-selfies.git
 ```
 and run 
 ```bash
