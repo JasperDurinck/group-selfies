@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="group_selfies",
-    version="1.0.0.jd",
+    version="1.0.0+jd",
     author="Austin Cheng, Andy Cai, Mario Krenn, Alston Lo, and many other contributors",
     author_email="austin.cheng@mail.utoronto.ca, alan@aspuru.com",
     description="Group SELFIES incorporates group tokens which represent functional groups or entire substructures into SELFIES while maintaining robustness.",
